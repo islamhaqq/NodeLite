@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.28)
 project(NodeLite)
 
-set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Include directories for NodeLite core and external libraries
@@ -31,4 +31,4 @@ endfunction(add_nodelite_test)
 
 add_nodelite_test(http_tests.js)
 add_nodelite_test(module_loading_tests.js)
-add_nodelite_tests(async_io_tests.js)
+add_nodelite_test(async_io_tests.js)
