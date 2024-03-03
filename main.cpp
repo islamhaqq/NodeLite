@@ -24,11 +24,15 @@ void runEventLoop() {
     }
 }
 
-int main() {
-    std::ifstream file("../index.js");
+int main(int argc, char* argv[]) {
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0] << " <path-to-js-file>" << std::endl;
+        return 1;
+    }
 
+    std::ifstream file(argv[1]);
     if (!file) {
-        std::cerr << "Unable to open file index.js";
+        std::cerr << "Unable to open file " << argv[1] << std::endl;
         return 1;
     }
 
