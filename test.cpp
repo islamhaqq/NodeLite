@@ -32,10 +32,19 @@ bool runTest(const TestCase& testCase) {
 }
 
 int main() {
-    // @TODO: Generate test cases automatically from a directory of test files
-    std::vector<TestCase> testCases = {
-        {"../tests/displayMessage.js", "../tests/displayMessage_expected.txt"}
-    };
+    std::vector<TestCase> testCases;
+    std::filesystem::path testDir = "../tests";
+
+    for (const auto& entry : std::filesystem::directory_iterator(testDir)) {
+        if (entry.path().extension() == ".js") {
+            std::filesystem::path expectedOutputFile = entry.path();
+            expectedOutputFile.replace_extension(".txt");
+
+            if (std::filesystem::exists(expectedOutputFile)) {
+                testCases.push_back(TestCase{entry.path().string(), expectedOutputFile.string()});
+            }
+        }
+    }
 
     int passedTests = 0;
     for (const auto& testCase : testCases) {
