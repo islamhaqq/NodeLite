@@ -19,7 +19,7 @@ std::string readFileContents(const std::string& filePath) {
     return {std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()};
 }
 
-bool runTest(const TestCase& testCase) {
+std::pair<bool, std::string> runTest(const TestCase &testCase) {
     std::filesystem::path exePath = std::filesystem::current_path() / "../bin/nodelite.exe";
     std::filesystem::path jsFilePath = std::filesystem::absolute(testCase.jsFile);
     std::string command = exePath.string() + " " + jsFilePath.string() + " output.txt";
@@ -28,7 +28,12 @@ bool runTest(const TestCase& testCase) {
     std::string expectedOutput = readFileContents(testCase.expectedOutputFile);
     std::string actualOutput = readFileContents("output.txt");
 
-    return expectedOutput == actualOutput;
+    if (expectedOutput != actualOutput) {
+        std::string errorMsg = "Expected:\n" + expectedOutput + "\nActual:\n" + actualOutput + "\n";
+        return {false, errorMsg};
+    }
+
+    return {true, ""};
 }
 
 int main() {
@@ -48,11 +53,12 @@ int main() {
 
     int passedTests = 0;
     for (const auto& testCase : testCases) {
-        if (runTest(testCase)) {
+        auto [testPassed, errorMessage] = runTest(testCase);
+        if (testPassed) {
             std::cout << testCase.jsFile << " PASSED" << std::endl;
             ++passedTests;
         } else {
-            std::cout << testCase.jsFile << " FAILED" << std::endl;
+            std::cout << testCase.jsFile << " FAILED\n" << errorMessage << std::endl;
         }
     }
 
