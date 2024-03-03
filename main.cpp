@@ -1,3 +1,5 @@
+/** NodeLight, a lightweight JavaScript runtime. */
+#include <fstream>
 #include <functional>
 #include <iostream>
 #include <string>
@@ -23,7 +25,19 @@ void runEventLoop() {
 }
 
 int main() {
-    const std::string jsCode = "console.log('Hello, World!');";
+    std::ifstream file("../index.js");
+
+    if (!file) {
+        std::cerr << "Unable to open file index.js";
+        return 1;
+    }
+
+    std::string jsCode;
+    std::string line;
+    while (getline(file, line)) {
+        jsCode += line;
+    }
+    file.close();
 
     interpretJS(jsCode);
 
