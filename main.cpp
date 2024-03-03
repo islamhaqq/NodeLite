@@ -3,7 +3,6 @@
 #include <functional>
 #include <iostream>
 #include <string>
-#include <unordered_map>
 
 std::vector<std::function<void()>> tasks;
 
@@ -24,7 +23,7 @@ void runEventLoop() {
     }
 }
 
-int main(int argc, char* argv[]) {
+int main(const int argc, char* argv[]) {
     if (argc < 2) {
         std::cerr << "Usage: " << argv[0] << " <path-to-js-file>" << std::endl;
         return 1;
