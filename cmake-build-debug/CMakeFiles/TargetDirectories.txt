@@ -1,0 +1,3 @@
+C:/Source/NodeLite/cmake-build-debug/CMakeFiles/NodeLite.dir
+C:/Source/NodeLite/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Source/NodeLite/cmake-build-debug/CMakeFiles/rebuild_cache.dir
