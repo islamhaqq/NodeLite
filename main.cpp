@@ -63,9 +63,8 @@ int main(const int argc, char* argv[]) {
         if (!outFile) {
             std::cerr << "Unable to open file " << argv[2] << std::endl;
             return 1;
-        } else {
-            outStream = &outFile;
         }
+        outStream = &outFile;
     }
 
     interpretJS(jsCode);

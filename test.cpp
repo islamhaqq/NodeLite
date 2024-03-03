@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <filesystem>
 
 struct TestCase {
     std::string jsFile;
@@ -19,7 +20,9 @@ std::string readFileContents(const std::string& filePath) {
 }
 
 bool runTest(const TestCase& testCase) {
-    std::string command = "../bin/nodelite " + testCase.jsFile + " > output.txt";
+    std::filesystem::path exePath = std::filesystem::current_path() / "../bin/nodelite.exe";
+    std::filesystem::path jsFilePath = std::filesystem::absolute(testCase.jsFile);
+    std::string command = exePath.string() + " " + jsFilePath.string() + " output.txt";
     std::system(command.c_str());
 
     std::string expectedOutput = readFileContents(testCase.expectedOutputFile);
@@ -31,8 +34,7 @@ bool runTest(const TestCase& testCase) {
 int main() {
     // @TODO: Generate test cases automatically from a directory of test files
     std::vector<TestCase> testCases = {
-        {"test1.js", "test1_expected.txt"},
-        {"test2.js", "test2_expected.txt"}
+        {"../tests/displayMessage.js", "../tests/displayMessage_expected.txt"}
     };
 
     int passedTests = 0;
