@@ -1,13 +1,12 @@
-/** NodeLite, a lightweight JavaScript runtime. */
+#include "NodeLite.h"
+
 #include <fstream>
-#include <functional>
-#include <iostream>
-#include <string>
 #include <regex>
+#include <functional>
 
 std::vector<std::function<void(std::ostream&)>> tasks;
 
-void interpretJS(std::string& code, std::ifstream &file, std::string &line) {
+void interpretJS(std::string &code, std::ifstream &file, std::string &line) {
     // Patterns
     std::regex consoleLogRegex(R"(console\.log\('(.+)'\);)");
     std::regex functionDefinitionRegex(R"(function\s+(\w+)\(\)\s*\{\s*console\.log\('(.+)'\);\s*\})");
@@ -53,49 +52,10 @@ void interpretJS(std::string& code, std::ifstream &file, std::string &line) {
     // Additional logic would be needed to match specific function calls to their definitions.
 }
 
-
-void runEventLoop(std::ostream& out) {
+void runEventLoop(std::ostream &out) {
     while (!tasks.empty()) {
         auto task = tasks.front();
         task(out);
         tasks.erase(tasks.begin());
     }
-}
-
-int main(const int argc, char* argv[]) {
-    if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " <path-to-js-file> [output-file]" << std::endl;
-        return 1;
-    }
-
-    std::ifstream file(argv[1]);
-    if (!file) {
-        std::cerr << "Unable to open file " << argv[1] << std::endl;
-        return 1;
-    }
-
-    std::string jsCode;
-    std::string line;
-    while (getline(file, line)) {
-        jsCode += line;
-    }
-    file.close();
-
-    std::ofstream outFile;
-    std::ostream* outStream = &std::cout;
-
-    if (argc >= 3) {
-        outFile.open(argv[2]);
-        if (!outFile) {
-            std::cerr << "Unable to open file " << argv[2] << std::endl;
-            return 1;
-        }
-        outStream = &outFile;
-    }
-
-    interpretJS(jsCode, file, line);
-
-    runEventLoop(*outStream);
-
-    return 0;
 }

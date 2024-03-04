@@ -8,11 +8,12 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 link_directories(${PROJECT_SOURCE_DIR}/lib)
 
 set(SOURCE_FILES
-    main.cpp
+        src/main.cpp
+        src/NodeLite.cpp
 )
 
 set(TEST_FILES
-    test.cpp
+        tests/test.cpp
 )
 
 add_executable(nodelite ${SOURCE_FILES})
